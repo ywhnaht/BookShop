@@ -54,7 +54,7 @@ namespace BookShop
             {
                 int totalPrice = (int)dataProvider.exeScaler("SELECT SUM(receipt_detail.quantity * books.price) FROM receipt_detail, books " +
                     "WHERE receipt_id = " + this.receiptId + " AND books.id = receipt_detail.book_id");
-                txtTotalPrice.Text = "Tổng Tiền: " + totalPrice;
+                txtTotalPrice.Text = "Tổng Tiền: " + totalPrice.ToString("N0") + " VND";
             }
             else
             {
@@ -99,11 +99,11 @@ namespace BookShop
                     LoaddgReceiptDetail();
                     LoadcbBook();
                     LoadPrice();
-                    MessageBox.Show("Thêm chi tiết phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show("Thêm sách vào phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
                 else
                 {
-                    MessageBox.Show("Thêm chi tiết phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show("Thêm sách vào phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             }
             else
@@ -153,11 +153,11 @@ namespace BookShop
                     LoaddgReceiptDetail();
                     LoadcbBook();
                     LoadPrice();
-                    MessageBox.Show("Xóa khỏi phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show("Xóa sách khỏi phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
                 else
                 {
-                    MessageBox.Show("Xóa khỏi phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show("Xóa sách khỏi phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             }
         }

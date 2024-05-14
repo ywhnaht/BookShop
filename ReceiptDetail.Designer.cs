@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel3 = new System.Windows.Forms.Panel();
             this.txtTotalPrice = new System.Windows.Forms.Label();
             this.numBookQuantity = new System.Windows.Forms.NumericUpDown();
@@ -66,7 +67,7 @@
             // 
             this.txtTotalPrice.AutoSize = true;
             this.txtTotalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalPrice.Location = new System.Drawing.Point(968, 128);
+            this.txtTotalPrice.Location = new System.Drawing.Point(912, 128);
             this.txtTotalPrice.Name = "txtTotalPrice";
             this.txtTotalPrice.Size = new System.Drawing.Size(178, 31);
             this.txtTotalPrice.TabIndex = 26;
@@ -161,6 +162,14 @@
             this.dgReceiptDetail.BackgroundColor = System.Drawing.Color.White;
             this.dgReceiptDetail.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgReceiptDetail.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgReceiptDetail.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgReceiptDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgReceiptDetail.Location = new System.Drawing.Point(59, 139);
             this.dgReceiptDetail.Margin = new System.Windows.Forms.Padding(3, 3, 50, 3);

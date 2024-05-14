@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tpBook = new System.Windows.Forms.TabPage();
             this.dgBook = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.numBookPrice = new System.Windows.Forms.NumericUpDown();
@@ -45,7 +46,7 @@
             this.btnRemoveBook = new System.Windows.Forms.Button();
             this.btnEditBook = new System.Windows.Forms.Button();
             this.btnAddBook = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tpBookType = new System.Windows.Forms.TabPage();
             this.dgBookType = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtBookType = new System.Windows.Forms.TextBox();
@@ -53,9 +54,10 @@
             this.btnRemoveBookType = new System.Windows.Forms.Button();
             this.btnEditBookType = new System.Windows.Forms.Button();
             this.btnAddBookType = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tpInvoice = new System.Windows.Forms.TabPage();
             this.dgInvoice = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnInvoiceDetail = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.txtPhoneNum = new System.Windows.Forms.TextBox();
             this.dtDateCreate = new System.Windows.Forms.DateTimePicker();
@@ -65,8 +67,9 @@
             this.btnRemoveInvoice = new System.Windows.Forms.Button();
             this.btnEditInvoice = new System.Windows.Forms.Button();
             this.btnAddInvoice = new System.Windows.Forms.Button();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tpReceipt = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.btnReceiptDetail = new System.Windows.Forms.Button();
             this.dtReceiptDateCr = new System.Windows.Forms.DateTimePicker();
             this.label7 = new System.Windows.Forms.Label();
             this.txtSupplier = new System.Windows.Forms.TextBox();
@@ -76,57 +79,110 @@
             this.btnAddReceipt = new System.Windows.Forms.Button();
             this.dgReceipt = new System.Windows.Forms.DataGridView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.btnUpdateAvatar = new System.Windows.Forms.Button();
+            this.pbAvatar = new System.Windows.Forms.PictureBox();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.btnUpdateProfile = new System.Windows.Forms.Button();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.txtAccountName = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.txtAddrEmployee = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtPhoneEmployee = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtNameEmployee = new System.Windows.Forms.TextBox();
             this.btnLogout = new System.Windows.Forms.Button();
+            this.tpRevenue = new System.Windows.Forms.TabPage();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.dtDateEnd = new System.Windows.Forms.DateTimePicker();
+            this.dtDateFrom = new System.Windows.Forms.DateTimePicker();
+            this.lbTotalPrice = new System.Windows.Forms.Label();
+            this.rbtEmployee = new System.Windows.Forms.RadioButton();
+            this.cbItem = new System.Windows.Forms.ComboBox();
+            this.btnStatistic = new System.Windows.Forms.Button();
+            this.rbtBookType = new System.Windows.Forms.RadioButton();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.rbtBook = new System.Windows.Forms.RadioButton();
+            this.rbtAll = new System.Windows.Forms.RadioButton();
+            this.dgRevenue = new System.Windows.Forms.DataGridView();
+            this.tpEmployee = new System.Windows.Forms.TabPage();
+            this.dgEmployee = new System.Windows.Forms.DataGridView();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtEmployeeAddr = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtEmployeePhone = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtEmployeeName = new System.Windows.Forms.TextBox();
+            this.btnRemoveEmployee = new System.Windows.Forms.Button();
+            this.btnEditEmployee = new System.Windows.Forms.Button();
+            this.btnAddEmployee = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tpBook.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBook)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numBookPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBookQuantity)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.tpBookType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBookType)).BeginInit();
             this.panel1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tpInvoice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgInvoice)).BeginInit();
             this.panel3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
+            this.tpReceipt.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgReceipt)).BeginInit();
             this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).BeginInit();
+            this.panel8.SuspendLayout();
+            this.tpRevenue.SuspendLayout();
+            this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRevenue)).BeginInit();
+            this.tpEmployee.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgEmployee)).BeginInit();
+            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tpBook);
+            this.tabControl1.Controls.Add(this.tpBookType);
+            this.tabControl1.Controls.Add(this.tpInvoice);
+            this.tabControl1.Controls.Add(this.tpReceipt);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tpRevenue);
+            this.tabControl1.Controls.Add(this.tpEmployee);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.Location = new System.Drawing.Point(28, 23);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 30, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1680, 921);
             this.tabControl1.TabIndex = 1;
+            this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
             // 
-            // tabPage1
+            // tpBook
             // 
-            this.tabPage1.Controls.Add(this.dgBook);
-            this.tabPage1.Controls.Add(this.panel2);
-            this.tabPage1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage1.Location = new System.Drawing.Point(8, 47);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(1664, 866);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Sách";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tpBook.Controls.Add(this.dgBook);
+            this.tpBook.Controls.Add(this.panel2);
+            this.tpBook.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tpBook.Location = new System.Drawing.Point(8, 47);
+            this.tpBook.Margin = new System.Windows.Forms.Padding(4);
+            this.tpBook.Name = "tpBook";
+            this.tpBook.Padding = new System.Windows.Forms.Padding(4);
+            this.tpBook.Size = new System.Drawing.Size(1664, 866);
+            this.tpBook.TabIndex = 0;
+            this.tpBook.Text = "Sách";
+            this.tpBook.UseVisualStyleBackColor = true;
             // 
             // dgBook
             // 
             this.dgBook.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgBook.BackgroundColor = System.Drawing.Color.White;
             this.dgBook.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgBook.Location = new System.Drawing.Point(36, 33);
             this.dgBook.Margin = new System.Windows.Forms.Padding(4);
@@ -139,6 +195,7 @@
             // 
             // panel2
             // 
+            this.panel2.AutoSize = true;
             this.panel2.Controls.Add(this.numBookPrice);
             this.panel2.Controls.Add(this.numBookQuantity);
             this.panel2.Controls.Add(this.label5);
@@ -290,23 +347,24 @@
             this.btnAddBook.UseVisualStyleBackColor = true;
             this.btnAddBook.Click += new System.EventHandler(this.btnAddBook_Click);
             // 
-            // tabPage2
+            // tpBookType
             // 
-            this.tabPage2.Controls.Add(this.dgBookType);
-            this.tabPage2.Controls.Add(this.panel1);
-            this.tabPage2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage2.Location = new System.Drawing.Point(8, 47);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1664, 866);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Loại Sách";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tpBookType.Controls.Add(this.dgBookType);
+            this.tpBookType.Controls.Add(this.panel1);
+            this.tpBookType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tpBookType.Location = new System.Drawing.Point(8, 47);
+            this.tpBookType.Margin = new System.Windows.Forms.Padding(4);
+            this.tpBookType.Name = "tpBookType";
+            this.tpBookType.Padding = new System.Windows.Forms.Padding(4);
+            this.tpBookType.Size = new System.Drawing.Size(1664, 866);
+            this.tpBookType.TabIndex = 1;
+            this.tpBookType.Text = "Loại Sách";
+            this.tpBookType.UseVisualStyleBackColor = true;
             // 
             // dgBookType
             // 
             this.dgBookType.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgBookType.BackgroundColor = System.Drawing.Color.White;
             this.dgBookType.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgBookType.Location = new System.Drawing.Point(40, 31);
             this.dgBookType.Margin = new System.Windows.Forms.Padding(4);
@@ -383,23 +441,24 @@
             this.btnAddBookType.UseVisualStyleBackColor = true;
             this.btnAddBookType.Click += new System.EventHandler(this.btnAddBookType_Click);
             // 
-            // tabPage3
+            // tpInvoice
             // 
-            this.tabPage3.Controls.Add(this.dgInvoice);
-            this.tabPage3.Controls.Add(this.panel3);
-            this.tabPage3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage3.Location = new System.Drawing.Point(8, 47);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Size = new System.Drawing.Size(1664, 866);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Hóa Đơn";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tpInvoice.Controls.Add(this.dgInvoice);
+            this.tpInvoice.Controls.Add(this.panel3);
+            this.tpInvoice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tpInvoice.Location = new System.Drawing.Point(8, 47);
+            this.tpInvoice.Margin = new System.Windows.Forms.Padding(4);
+            this.tpInvoice.Name = "tpInvoice";
+            this.tpInvoice.Padding = new System.Windows.Forms.Padding(4);
+            this.tpInvoice.Size = new System.Drawing.Size(1664, 866);
+            this.tpInvoice.TabIndex = 2;
+            this.tpInvoice.Text = "Hóa Đơn";
+            this.tpInvoice.UseVisualStyleBackColor = true;
             // 
             // dgInvoice
             // 
             this.dgInvoice.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgInvoice.BackgroundColor = System.Drawing.Color.White;
             this.dgInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgInvoice.Location = new System.Drawing.Point(40, 31);
             this.dgInvoice.Margin = new System.Windows.Forms.Padding(4);
@@ -412,6 +471,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnInvoiceDetail);
             this.panel3.Controls.Add(this.label17);
             this.panel3.Controls.Add(this.txtPhoneNum);
             this.panel3.Controls.Add(this.dtDateCreate);
@@ -427,6 +487,17 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1584, 202);
             this.panel3.TabIndex = 4;
+            // 
+            // btnInvoiceDetail
+            // 
+            this.btnInvoiceDetail.Location = new System.Drawing.Point(1028, 45);
+            this.btnInvoiceDetail.Margin = new System.Windows.Forms.Padding(4);
+            this.btnInvoiceDetail.Name = "btnInvoiceDetail";
+            this.btnInvoiceDetail.Size = new System.Drawing.Size(191, 48);
+            this.btnInvoiceDetail.TabIndex = 20;
+            this.btnInvoiceDetail.Text = "Chi Tiết";
+            this.btnInvoiceDetail.UseVisualStyleBackColor = true;
+            this.btnInvoiceDetail.Click += new System.EventHandler(this.btnInvoiceDetail_Click);
             // 
             // label17
             // 
@@ -517,22 +588,23 @@
             this.btnAddInvoice.UseVisualStyleBackColor = true;
             this.btnAddInvoice.Click += new System.EventHandler(this.btnAddInvoice_Click);
             // 
-            // tabPage4
+            // tpReceipt
             // 
-            this.tabPage4.Controls.Add(this.panel4);
-            this.tabPage4.Controls.Add(this.dgReceipt);
-            this.tabPage4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage4.Location = new System.Drawing.Point(8, 47);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage4.Size = new System.Drawing.Size(1664, 866);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Phiếu Nhập";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.tpReceipt.Controls.Add(this.panel4);
+            this.tpReceipt.Controls.Add(this.dgReceipt);
+            this.tpReceipt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tpReceipt.Location = new System.Drawing.Point(8, 47);
+            this.tpReceipt.Margin = new System.Windows.Forms.Padding(4);
+            this.tpReceipt.Name = "tpReceipt";
+            this.tpReceipt.Padding = new System.Windows.Forms.Padding(4);
+            this.tpReceipt.Size = new System.Drawing.Size(1664, 866);
+            this.tpReceipt.TabIndex = 3;
+            this.tpReceipt.Text = "Phiếu Nhập";
+            this.tpReceipt.UseVisualStyleBackColor = true;
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.btnReceiptDetail);
             this.panel4.Controls.Add(this.dtReceiptDateCr);
             this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.txtSupplier);
@@ -546,6 +618,17 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1584, 202);
             this.panel4.TabIndex = 6;
+            // 
+            // btnReceiptDetail
+            // 
+            this.btnReceiptDetail.Location = new System.Drawing.Point(801, 113);
+            this.btnReceiptDetail.Margin = new System.Windows.Forms.Padding(4);
+            this.btnReceiptDetail.Name = "btnReceiptDetail";
+            this.btnReceiptDetail.Size = new System.Drawing.Size(191, 48);
+            this.btnReceiptDetail.TabIndex = 18;
+            this.btnReceiptDetail.Text = "Chi Tiết";
+            this.btnReceiptDetail.UseVisualStyleBackColor = true;
+            this.btnReceiptDetail.Click += new System.EventHandler(this.btnReceiptDetail_Click);
             // 
             // dtReceiptDateCr
             // 
@@ -621,6 +704,7 @@
             // dgReceipt
             // 
             this.dgReceipt.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgReceipt.BackgroundColor = System.Drawing.Color.White;
             this.dgReceipt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgReceipt.Location = new System.Drawing.Point(40, 31);
             this.dgReceipt.Margin = new System.Windows.Forms.Padding(4);
@@ -633,6 +717,10 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.BackColor = System.Drawing.Color.White;
+            this.tabPage5.Controls.Add(this.btnUpdateAvatar);
+            this.tabPage5.Controls.Add(this.pbAvatar);
+            this.tabPage5.Controls.Add(this.panel8);
             this.tabPage5.Controls.Add(this.btnLogout);
             this.tabPage5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage5.Location = new System.Drawing.Point(8, 47);
@@ -641,12 +729,163 @@
             this.tabPage5.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage5.Size = new System.Drawing.Size(1664, 866);
             this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Tài khoản";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.tabPage5.Text = "Tài Khoản";
+            // 
+            // btnUpdateAvatar
+            // 
+            this.btnUpdateAvatar.Location = new System.Drawing.Point(244, 729);
+            this.btnUpdateAvatar.Name = "btnUpdateAvatar";
+            this.btnUpdateAvatar.Size = new System.Drawing.Size(218, 69);
+            this.btnUpdateAvatar.TabIndex = 4;
+            this.btnUpdateAvatar.Text = "Cập Nhật Ảnh";
+            this.btnUpdateAvatar.UseVisualStyleBackColor = true;
+            this.btnUpdateAvatar.Click += new System.EventHandler(this.btnUpdateAvatar_Click);
+            // 
+            // pbAvatar
+            // 
+            this.pbAvatar.Image = ((System.Drawing.Image)(resources.GetObject("pbAvatar.Image")));
+            this.pbAvatar.Location = new System.Drawing.Point(51, 47);
+            this.pbAvatar.Name = "pbAvatar";
+            this.pbAvatar.Size = new System.Drawing.Size(615, 604);
+            this.pbAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbAvatar.TabIndex = 3;
+            this.pbAvatar.TabStop = false;
+            // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel8.Controls.Add(this.btnUpdateProfile);
+            this.panel8.Controls.Add(this.label22);
+            this.panel8.Controls.Add(this.label20);
+            this.panel8.Controls.Add(this.txtPassword);
+            this.panel8.Controls.Add(this.label21);
+            this.panel8.Controls.Add(this.txtAccountName);
+            this.panel8.Controls.Add(this.label16);
+            this.panel8.Controls.Add(this.txtAddrEmployee);
+            this.panel8.Controls.Add(this.label18);
+            this.panel8.Controls.Add(this.txtPhoneEmployee);
+            this.panel8.Controls.Add(this.label19);
+            this.panel8.Controls.Add(this.txtNameEmployee);
+            this.panel8.Location = new System.Drawing.Point(713, 47);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(908, 604);
+            this.panel8.TabIndex = 2;
+            // 
+            // btnUpdateProfile
+            // 
+            this.btnUpdateProfile.Location = new System.Drawing.Point(354, 509);
+            this.btnUpdateProfile.Name = "btnUpdateProfile";
+            this.btnUpdateProfile.Size = new System.Drawing.Size(237, 59);
+            this.btnUpdateProfile.TabIndex = 34;
+            this.btnUpdateProfile.Text = "Cập Nhật";
+            this.btnUpdateProfile.UseVisualStyleBackColor = true;
+            this.btnUpdateProfile.Click += new System.EventHandler(this.btnUpdateProfile_Click);
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(319, 49);
+            this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(300, 37);
+            this.label22.TabIndex = 33;
+            this.label22.Text = "Thông Tin Cá Nhân";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(184, 209);
+            this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(129, 31);
+            this.label20.TabIndex = 32;
+            this.label20.Text = "Mật Khẩu";
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(407, 206);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(350, 38);
+            this.txtPassword.TabIndex = 31;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(184, 139);
+            this.label21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(191, 31);
+            this.label21.TabIndex = 30;
+            this.label21.Text = "Tên Tài Khoản";
+            // 
+            // txtAccountName
+            // 
+            this.txtAccountName.Location = new System.Drawing.Point(407, 136);
+            this.txtAccountName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtAccountName.Name = "txtAccountName";
+            this.txtAccountName.Size = new System.Drawing.Size(350, 38);
+            this.txtAccountName.TabIndex = 29;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(184, 428);
+            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(103, 31);
+            this.label16.TabIndex = 28;
+            this.label16.Text = "Địa Chỉ";
+            // 
+            // txtAddrEmployee
+            // 
+            this.txtAddrEmployee.Location = new System.Drawing.Point(407, 425);
+            this.txtAddrEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.txtAddrEmployee.Name = "txtAddrEmployee";
+            this.txtAddrEmployee.Size = new System.Drawing.Size(350, 38);
+            this.txtAddrEmployee.TabIndex = 27;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(184, 355);
+            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(188, 31);
+            this.label18.TabIndex = 26;
+            this.label18.Text = "Sđt Nhân Viên";
+            // 
+            // txtPhoneEmployee
+            // 
+            this.txtPhoneEmployee.Location = new System.Drawing.Point(407, 352);
+            this.txtPhoneEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPhoneEmployee.Name = "txtPhoneEmployee";
+            this.txtPhoneEmployee.Size = new System.Drawing.Size(350, 38);
+            this.txtPhoneEmployee.TabIndex = 25;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(184, 285);
+            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(194, 31);
+            this.label19.TabIndex = 24;
+            this.label19.Text = "Tên Nhân Viên";
+            // 
+            // txtNameEmployee
+            // 
+            this.txtNameEmployee.Location = new System.Drawing.Point(407, 282);
+            this.txtNameEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.txtNameEmployee.Name = "txtNameEmployee";
+            this.txtNameEmployee.Size = new System.Drawing.Size(350, 38);
+            this.txtNameEmployee.TabIndex = 23;
             // 
             // btnLogout
             // 
-            this.btnLogout.Location = new System.Drawing.Point(1256, 700);
+            this.btnLogout.Location = new System.Drawing.Point(1255, 729);
             this.btnLogout.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(288, 69);
@@ -654,6 +893,305 @@
             this.btnLogout.Text = "Đăng xuất";
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
+            // tpRevenue
+            // 
+            this.tpRevenue.BackColor = System.Drawing.Color.White;
+            this.tpRevenue.Controls.Add(this.panel5);
+            this.tpRevenue.Controls.Add(this.dgRevenue);
+            this.tpRevenue.Location = new System.Drawing.Point(8, 47);
+            this.tpRevenue.Name = "tpRevenue";
+            this.tpRevenue.Padding = new System.Windows.Forms.Padding(3);
+            this.tpRevenue.Size = new System.Drawing.Size(1664, 866);
+            this.tpRevenue.TabIndex = 5;
+            this.tpRevenue.Text = "Doanh Thu";
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.Cornsilk;
+            this.panel5.Controls.Add(this.dtDateEnd);
+            this.panel5.Controls.Add(this.dtDateFrom);
+            this.panel5.Controls.Add(this.lbTotalPrice);
+            this.panel5.Controls.Add(this.rbtEmployee);
+            this.panel5.Controls.Add(this.cbItem);
+            this.panel5.Controls.Add(this.btnStatistic);
+            this.panel5.Controls.Add(this.rbtBookType);
+            this.panel5.Controls.Add(this.label12);
+            this.panel5.Controls.Add(this.label6);
+            this.panel5.Controls.Add(this.rbtBook);
+            this.panel5.Controls.Add(this.rbtAll);
+            this.panel5.Location = new System.Drawing.Point(40, 619);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1584, 223);
+            this.panel5.TabIndex = 1;
+            // 
+            // dtDateEnd
+            // 
+            this.dtDateEnd.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtDateEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtDateEnd.Location = new System.Drawing.Point(704, 59);
+            this.dtDateEnd.Name = "dtDateEnd";
+            this.dtDateEnd.Size = new System.Drawing.Size(442, 38);
+            this.dtDateEnd.TabIndex = 29;
+            this.dtDateEnd.ValueChanged += new System.EventHandler(this.dtDateEnd_ValueChanged);
+            // 
+            // dtDateFrom
+            // 
+            this.dtDateFrom.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtDateFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtDateFrom.Location = new System.Drawing.Point(116, 59);
+            this.dtDateFrom.Name = "dtDateFrom";
+            this.dtDateFrom.Size = new System.Drawing.Size(441, 38);
+            this.dtDateFrom.TabIndex = 28;
+            this.dtDateFrom.ValueChanged += new System.EventHandler(this.dtDateFrom_ValueChanged);
+            // 
+            // lbTotalPrice
+            // 
+            this.lbTotalPrice.AutoSize = true;
+            this.lbTotalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTotalPrice.Location = new System.Drawing.Point(1152, 65);
+            this.lbTotalPrice.Name = "lbTotalPrice";
+            this.lbTotalPrice.Size = new System.Drawing.Size(264, 31);
+            this.lbTotalPrice.TabIndex = 27;
+            this.lbTotalPrice.Text = "Tổng Doanh Thu: 0";
+            this.lbTotalPrice.Click += new System.EventHandler(this.txtTotalPrice_Click);
+            // 
+            // rbtEmployee
+            // 
+            this.rbtEmployee.AutoSize = true;
+            this.rbtEmployee.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtEmployee.Location = new System.Drawing.Point(651, 129);
+            this.rbtEmployee.Name = "rbtEmployee";
+            this.rbtEmployee.Size = new System.Drawing.Size(167, 35);
+            this.rbtEmployee.TabIndex = 22;
+            this.rbtEmployee.Text = "Nhân viên";
+            this.rbtEmployee.UseVisualStyleBackColor = true;
+            this.rbtEmployee.CheckedChanged += new System.EventHandler(this.rbtEmployee_CheckedChanged);
+            // 
+            // cbItem
+            // 
+            this.cbItem.BackColor = System.Drawing.Color.White;
+            this.cbItem.Enabled = false;
+            this.cbItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbItem.FormattingEnabled = true;
+            this.cbItem.Location = new System.Drawing.Point(871, 129);
+            this.cbItem.Name = "cbItem";
+            this.cbItem.Size = new System.Drawing.Size(363, 39);
+            this.cbItem.TabIndex = 21;
+            this.cbItem.SelectedIndexChanged += new System.EventHandler(this.cbItem_SelectedIndexChanged);
+            // 
+            // btnStatistic
+            // 
+            this.btnStatistic.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStatistic.Location = new System.Drawing.Point(1333, 117);
+            this.btnStatistic.Name = "btnStatistic";
+            this.btnStatistic.Size = new System.Drawing.Size(216, 54);
+            this.btnStatistic.TabIndex = 20;
+            this.btnStatistic.Text = "Thống Kê";
+            this.btnStatistic.UseVisualStyleBackColor = true;
+            this.btnStatistic.Click += new System.EventHandler(this.btnStatistic_Click);
+            // 
+            // rbtBookType
+            // 
+            this.rbtBookType.AutoSize = true;
+            this.rbtBookType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtBookType.Location = new System.Drawing.Point(423, 131);
+            this.rbtBookType.Name = "rbtBookType";
+            this.rbtBookType.Size = new System.Drawing.Size(161, 35);
+            this.rbtBookType.TabIndex = 19;
+            this.rbtBookType.Text = "Loại sách";
+            this.rbtBookType.UseVisualStyleBackColor = true;
+            this.rbtBookType.CheckedChanged += new System.EventHandler(this.rbtEmployee_CheckedChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(563, 59);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(135, 31);
+            this.label12.TabIndex = 17;
+            this.label12.Text = "Đến Ngày";
+            this.label12.Click += new System.EventHandler(this.label12_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(3, 59);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(117, 31);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Từ Ngày";
+            // 
+            // rbtBook
+            // 
+            this.rbtBook.AutoSize = true;
+            this.rbtBook.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtBook.Location = new System.Drawing.Point(238, 131);
+            this.rbtBook.Name = "rbtBook";
+            this.rbtBook.Size = new System.Drawing.Size(107, 35);
+            this.rbtBook.TabIndex = 14;
+            this.rbtBook.Text = "Sách";
+            this.rbtBook.UseVisualStyleBackColor = true;
+            this.rbtBook.CheckedChanged += new System.EventHandler(this.rbtEmployee_CheckedChanged);
+            // 
+            // rbtAll
+            // 
+            this.rbtAll.AutoSize = true;
+            this.rbtAll.Checked = true;
+            this.rbtAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtAll.Location = new System.Drawing.Point(37, 127);
+            this.rbtAll.Name = "rbtAll";
+            this.rbtAll.Size = new System.Drawing.Size(121, 35);
+            this.rbtAll.TabIndex = 13;
+            this.rbtAll.TabStop = true;
+            this.rbtAll.Text = "Tất cả";
+            this.rbtAll.UseVisualStyleBackColor = true;
+            this.rbtAll.CheckedChanged += new System.EventHandler(this.rbtEmployee_CheckedChanged);
+            // 
+            // dgRevenue
+            // 
+            this.dgRevenue.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgRevenue.BackgroundColor = System.Drawing.Color.White;
+            this.dgRevenue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgRevenue.Location = new System.Drawing.Point(40, 33);
+            this.dgRevenue.Name = "dgRevenue";
+            this.dgRevenue.RowHeadersWidth = 82;
+            this.dgRevenue.RowTemplate.Height = 33;
+            this.dgRevenue.Size = new System.Drawing.Size(1584, 550);
+            this.dgRevenue.TabIndex = 0;
+            // 
+            // tpEmployee
+            // 
+            this.tpEmployee.Controls.Add(this.dgEmployee);
+            this.tpEmployee.Controls.Add(this.panel6);
+            this.tpEmployee.Location = new System.Drawing.Point(8, 47);
+            this.tpEmployee.Name = "tpEmployee";
+            this.tpEmployee.Padding = new System.Windows.Forms.Padding(3);
+            this.tpEmployee.Size = new System.Drawing.Size(1664, 866);
+            this.tpEmployee.TabIndex = 6;
+            this.tpEmployee.Text = "Quản Lí Nhân Viên";
+            this.tpEmployee.UseVisualStyleBackColor = true;
+            // 
+            // dgEmployee
+            // 
+            this.dgEmployee.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgEmployee.BackgroundColor = System.Drawing.Color.White;
+            this.dgEmployee.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgEmployee.Location = new System.Drawing.Point(40, 29);
+            this.dgEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.dgEmployee.Name = "dgEmployee";
+            this.dgEmployee.RowHeadersWidth = 82;
+            this.dgEmployee.RowTemplate.Height = 33;
+            this.dgEmployee.Size = new System.Drawing.Size(1584, 579);
+            this.dgEmployee.TabIndex = 7;
+            this.dgEmployee.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgEmployee_CellClick);
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.label15);
+            this.panel6.Controls.Add(this.txtEmployeeAddr);
+            this.panel6.Controls.Add(this.label13);
+            this.panel6.Controls.Add(this.txtEmployeePhone);
+            this.panel6.Controls.Add(this.label14);
+            this.panel6.Controls.Add(this.txtEmployeeName);
+            this.panel6.Controls.Add(this.btnRemoveEmployee);
+            this.panel6.Controls.Add(this.btnEditEmployee);
+            this.panel6.Controls.Add(this.btnAddEmployee);
+            this.panel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panel6.Location = new System.Drawing.Point(40, 635);
+            this.panel6.Margin = new System.Windows.Forms.Padding(4);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(1584, 202);
+            this.panel6.TabIndex = 6;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(629, 124);
+            this.label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(103, 31);
+            this.label15.TabIndex = 22;
+            this.label15.Text = "Địa Chỉ";
+            // 
+            // txtEmployeeAddr
+            // 
+            this.txtEmployeeAddr.Location = new System.Drawing.Point(758, 121);
+            this.txtEmployeeAddr.Margin = new System.Windows.Forms.Padding(4);
+            this.txtEmployeeAddr.Name = "txtEmployeeAddr";
+            this.txtEmployeeAddr.Size = new System.Drawing.Size(311, 38);
+            this.txtEmployeeAddr.TabIndex = 21;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(20, 124);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(188, 31);
+            this.label13.TabIndex = 19;
+            this.label13.Text = "Sđt Nhân Viên";
+            // 
+            // txtEmployeePhone
+            // 
+            this.txtEmployeePhone.Location = new System.Drawing.Point(243, 121);
+            this.txtEmployeePhone.Margin = new System.Windows.Forms.Padding(4);
+            this.txtEmployeePhone.Name = "txtEmployeePhone";
+            this.txtEmployeePhone.Size = new System.Drawing.Size(350, 38);
+            this.txtEmployeePhone.TabIndex = 18;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(20, 54);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(194, 31);
+            this.label14.TabIndex = 9;
+            this.label14.Text = "Tên Nhân Viên";
+            // 
+            // txtEmployeeName
+            // 
+            this.txtEmployeeName.Location = new System.Drawing.Point(243, 51);
+            this.txtEmployeeName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtEmployeeName.Name = "txtEmployeeName";
+            this.txtEmployeeName.Size = new System.Drawing.Size(350, 38);
+            this.txtEmployeeName.TabIndex = 8;
+            // 
+            // btnRemoveEmployee
+            // 
+            this.btnRemoveEmployee.Location = new System.Drawing.Point(1432, 140);
+            this.btnRemoveEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRemoveEmployee.Name = "btnRemoveEmployee";
+            this.btnRemoveEmployee.Size = new System.Drawing.Size(128, 48);
+            this.btnRemoveEmployee.TabIndex = 3;
+            this.btnRemoveEmployee.Text = "Xóa";
+            this.btnRemoveEmployee.UseVisualStyleBackColor = true;
+            this.btnRemoveEmployee.Click += new System.EventHandler(this.btnRemoveEmployee_Click);
+            // 
+            // btnEditEmployee
+            // 
+            this.btnEditEmployee.Location = new System.Drawing.Point(1432, 71);
+            this.btnEditEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEditEmployee.Name = "btnEditEmployee";
+            this.btnEditEmployee.Size = new System.Drawing.Size(128, 48);
+            this.btnEditEmployee.TabIndex = 2;
+            this.btnEditEmployee.Text = "Sửa";
+            this.btnEditEmployee.UseVisualStyleBackColor = true;
+            this.btnEditEmployee.Click += new System.EventHandler(this.btnEditEmployee_Click);
+            // 
+            // btnAddEmployee
+            // 
+            this.btnAddEmployee.Location = new System.Drawing.Point(1432, 8);
+            this.btnAddEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAddEmployee.Name = "btnAddEmployee";
+            this.btnAddEmployee.Size = new System.Drawing.Size(128, 48);
+            this.btnAddEmployee.TabIndex = 1;
+            this.btnAddEmployee.Text = "Thêm";
+            this.btnAddEmployee.UseVisualStyleBackColor = true;
+            this.btnAddEmployee.Click += new System.EventHandler(this.btnAddEmployee_Click);
             // 
             // MainForm
             // 
@@ -669,25 +1207,37 @@
             this.Text = "Book Shop";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tpBook.ResumeLayout(false);
+            this.tpBook.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBook)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numBookPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBookQuantity)).EndInit();
-            this.tabPage2.ResumeLayout(false);
+            this.tpBookType.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgBookType)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
+            this.tpInvoice.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgInvoice)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
+            this.tpReceipt.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgReceipt)).EndInit();
             this.tabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).EndInit();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            this.tpRevenue.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRevenue)).EndInit();
+            this.tpEmployee.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgEmployee)).EndInit();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -695,7 +1245,7 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tpBook;
         private System.Windows.Forms.DataGridView dgBook;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.NumericUpDown numBookPrice;
@@ -711,9 +1261,9 @@
         private System.Windows.Forms.Button btnRemoveBook;
         private System.Windows.Forms.Button btnEditBook;
         private System.Windows.Forms.Button btnAddBook;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tpBookType;
+        private System.Windows.Forms.TabPage tpInvoice;
+        private System.Windows.Forms.TabPage tpReceipt;
         private System.Windows.Forms.DataGridView dgBookType;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label9;
@@ -743,6 +1293,49 @@
         private System.Windows.Forms.Button btnAddReceipt;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.Button btnReceiptDetail;
+        private System.Windows.Forms.Button btnInvoiceDetail;
+        private System.Windows.Forms.TabPage tpRevenue;
+        private System.Windows.Forms.DataGridView dgRevenue;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button btnStatistic;
+        private System.Windows.Forms.RadioButton rbtBookType;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.RadioButton rbtBook;
+        private System.Windows.Forms.RadioButton rbtAll;
+        private System.Windows.Forms.ComboBox cbItem;
+        private System.Windows.Forms.RadioButton rbtEmployee;
+        private System.Windows.Forms.Label lbTotalPrice;
+        private System.Windows.Forms.DateTimePicker dtDateFrom;
+        private System.Windows.Forms.DateTimePicker dtDateEnd;
+        private System.Windows.Forms.TabPage tpEmployee;
+        private System.Windows.Forms.DataGridView dgEmployee;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtEmployeePhone;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtEmployeeName;
+        private System.Windows.Forms.Button btnRemoveEmployee;
+        private System.Windows.Forms.Button btnEditEmployee;
+        private System.Windows.Forms.Button btnAddEmployee;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtEmployeeAddr;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.PictureBox pbAvatar;
+        private System.Windows.Forms.Button btnUpdateAvatar;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox txtAddrEmployee;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox txtPhoneEmployee;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox txtNameEmployee;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox txtAccountName;
+        private System.Windows.Forms.Button btnUpdateProfile;
+        private System.Windows.Forms.Label label22;
     }
 }
 

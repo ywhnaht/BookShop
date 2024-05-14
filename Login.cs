@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -39,24 +40,36 @@ namespace BookShop
             string username = txtUserName.Text;
             string password = txtPass.Text;
 
-            string query = $"SELECT id FROM users WHERE user_name = '{username}' AND password = '{password}'";
+            string query = $"SELECT hashed_password FROM users WHERE user_name = '{username}'";
 
             DataProvider provider = new DataProvider();
             object result = provider.exeScaler(query);
 
             if (result != null)
             {
-                userId = Convert.ToInt32(result); 
-                                               
-                MainForm mainForm = new MainForm(userId); 
-                mainForm.Show();
-                this.Hide();
-                mainForm.LogOut += MainForm_LogOut;
-                MessageBox.Show("Đăng nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                string hashedPassword = result.ToString();
+
+                if (PasswordEncrypt.VerifyPassword(password, hashedPassword))
+                {
+                    query = $"SELECT id FROM users WHERE user_name = '{username}'";
+                    result = provider.exeScaler(query);
+
+                    userId = Convert.ToInt32(result);
+
+                    MainForm mainForm = new MainForm(userId);
+                    mainForm.Show();
+                    this.Hide();
+                    mainForm.LogOut += MainForm_LogOut;
+                    MessageBox.Show("Đăng nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Mật khẩu không chính xác!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }                       
             }
             else
             {
-                MessageBox.Show("Tên người dùng hoặc mật khẩu không chính xác!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show("Tên tài khoản không tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
         }
 

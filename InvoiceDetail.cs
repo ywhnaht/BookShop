@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,8 @@ namespace BookShop
             {
                 int totalPrice = (int)dataProvider.exeScaler("SELECT SUM(invoice_detail.quantity * books.price) FROM invoice_detail, books " +
                     "WHERE invoice_detail.invoice_id = " + this.invoiceId + " AND " + "invoice_detail.book_id = books.id");
-                txtTotalPrice.Text = "Tổng Tiền: " + totalPrice;
+                txtTotalPrice.Text = "Tổng Tiền: " + totalPrice.ToString("N0") + " VND";
+                dataProvider.exeNonQuery("UPDATE invoice SET total_price = " + totalPrice + " WHERE id = " + this.invoiceId);
             }
             else
             {
@@ -208,5 +210,107 @@ namespace BookShop
             numBookQuantity.Value = (int)row.Cells[1].Value;
             invoiceDetailId = (int)dataProvider.exeScaler("SELECT id FROM invoice_detail WHERE invoice_id = " + invoiceId + " AND book_id = " + book_bookId);
         }
+
+        private void btnPrintInvoice_Click(object sender, EventArgs e)
+        {
+            DialogResult check = MessageBox.Show("Xác nhận thanh toán và in hóa đơn?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (check == DialogResult.Yes)
+            {
+                dataProvider.exeNonQuery("UPDATE invoice SET status = 1 WHERE id = " + invoiceId);
+                prdInvoice.Document = pdInvoice;
+                prdInvoice.ShowDialog();
+            }
+        }
+
+        private void pdInvoice_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            DataTable dt = new DataTable();
+            StringBuilder query = new StringBuilder("SELECT books.book_name");
+            query.Append(", invoice_detail.quantity");
+            query.Append(", books.price");
+            query.Append(", books.price * invoice_detail.quantity as price_item");
+            query.Append(", invoice.user_name");
+            query.Append(", invoice.user_phone");
+            query.Append(", invoice.date_create");
+            query.Append(", invoice.total_price");
+            query.Append(", users.full_name as employee_name");
+            query.Append(" FROM invoice_detail");
+            query.Append(" JOIN books ON books.id = invoice_detail.book_id");
+            query.Append(" JOIN invoice ON invoice_detail.invoice_id = invoice.id");
+            query.Append(" JOIN users ON invoice.user_id = users.id");
+            query.Append(" WHERE invoice_detail.invoice_id = " + this.invoiceId);
+            dt = dataProvider.exeQuery(query.ToString());
+
+            if (dt.Rows.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy hóa đơn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            DataRow firstRow = dt.Rows[0];
+            string userName = firstRow["user_name"].ToString();
+            string userPhone = firstRow["user_phone"].ToString();
+            DateTime dateCreate = Convert.ToDateTime(firstRow["date_create"]);
+            decimal totalPrice = Convert.ToDecimal(firstRow["total_price"]);
+            string employeeName = firstRow["employee_name"].ToString();
+
+            Graphics graphics = e.Graphics;
+            Font font = new Font("Arial", 12);
+            Font boldFont = new Font("Arial", 12, FontStyle.Bold);
+            float fontHeight = font.GetHeight();
+            int pageWidth = e.PageBounds.Width;
+            int startX = 10;
+            int startY = 10;
+            int offset = 40;
+
+            // In tiêu đề hóa đơn
+            string title = "Hóa đơn bán sách";
+            float titleWidth = graphics.MeasureString(title, new Font("Arial", 18, FontStyle.Bold)).Width;
+            int titleX = (int)((pageWidth - titleWidth) / 2);
+            graphics.DrawString(title, new Font("Arial", 18, FontStyle.Bold), new SolidBrush(Color.Black), titleX, startY);
+            offset += (int)fontHeight + 20;
+
+            // In thông tin khách hàng và ngày tháng, căn lề trái
+            graphics.DrawString("Tên khách hàng: " + userName, boldFont, new SolidBrush(Color.Black), startX, startY + offset);
+            offset += (int)fontHeight + 5;
+            graphics.DrawString("Số điện thoại: " + userPhone, boldFont, new SolidBrush(Color.Black), startX, startY + offset);
+            offset += (int)fontHeight + 5;
+            graphics.DrawString("Ngày tạo: " + dateCreate.ToString("dd/MM/yyyy"), boldFont, new SolidBrush(Color.Black), startX, startY + offset);
+            offset += (int)fontHeight + 5;
+            graphics.DrawString("Nhân viên xuất hóa đơn: " + employeeName, boldFont, new SolidBrush(Color.Black), startX, startY + offset);
+            offset += (int)fontHeight + 20;
+
+            // In tiêu đề cột chi tiết hóa đơn, căn giữa
+            string columnHeaders = "Tên sách".PadRight(30) + "Số lượng".PadRight(10) + "Đơn giá (VND)".PadRight(15) + "Thành tiền (VND)";
+            float columnHeadersWidth = graphics.MeasureString(columnHeaders, boldFont).Width;
+            int columnHeadersX = (int)((pageWidth - columnHeadersWidth) / 2);
+            graphics.DrawString(columnHeaders, boldFont, new SolidBrush(Color.Black), columnHeadersX, startY + offset);
+            offset += (int)fontHeight + 5;
+            string separatorLine = new string('-', 80);
+            float separatorLineWidth = graphics.MeasureString(separatorLine, font).Width;
+            int separatorLineX = (int)((pageWidth - separatorLineWidth) / 2);
+            graphics.DrawString(separatorLine, font, new SolidBrush(Color.Black), separatorLineX, startY + offset);
+            offset += (int)fontHeight + 5;
+
+            // In các dòng chi tiết hóa đơn, căn giữa
+            foreach (DataRow row in dt.Rows)
+            {
+                string bookName = row["book_name"].ToString();
+                int quantity = Convert.ToInt32(row["quantity"]);
+                decimal price = Convert.ToDecimal(row["price"]);
+                decimal priceItem = Convert.ToDecimal(row["price_item"]);
+
+                string line = bookName.PadRight(30) + quantity.ToString().PadRight(10) + price.ToString("N0").PadRight(15) + priceItem.ToString("N0");
+                float lineWidth = graphics.MeasureString(line, font).Width;
+                int lineX = (int)((pageWidth - lineWidth) / 2);
+                graphics.DrawString(line, font, new SolidBrush(Color.Black), lineX, startY + offset);
+                offset += (int)fontHeight + 5;
+            }
+
+            // In tổng tiền, căn lề trái
+            offset += 20;
+            graphics.DrawString("Tổng tiền: " + totalPrice.ToString("N0") + " VND", boldFont, new SolidBrush(Color.Black), startX, startY + offset);
+        }
+
     }
 }
