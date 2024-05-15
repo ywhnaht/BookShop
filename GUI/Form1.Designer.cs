@@ -215,7 +215,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1584, 202);
             this.panel2.TabIndex = 2;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // numBookPrice
             // 
@@ -396,7 +395,6 @@
             this.txtBookType.Name = "txtBookType";
             this.txtBookType.Size = new System.Drawing.Size(312, 38);
             this.txtBookType.TabIndex = 8;
-            this.txtBookType.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label9
             // 
@@ -524,7 +522,6 @@
             this.dtDateCreate.Name = "dtDateCreate";
             this.dtDateCreate.Size = new System.Drawing.Size(568, 38);
             this.dtDateCreate.TabIndex = 17;
-            this.dtDateCreate.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // label8
             // 
@@ -535,7 +532,6 @@
             this.label8.Size = new System.Drawing.Size(217, 31);
             this.label8.TabIndex = 9;
             this.label8.Text = "Tên Khách Hàng";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // txtUserName
             // 
@@ -637,7 +633,6 @@
             this.dtReceiptDateCr.Name = "dtReceiptDateCr";
             this.dtReceiptDateCr.Size = new System.Drawing.Size(572, 38);
             this.dtReceiptDateCr.TabIndex = 17;
-            this.dtReceiptDateCr.ValueChanged += new System.EventHandler(this.dateTimePicker2_ValueChanged);
             // 
             // label7
             // 
@@ -666,7 +661,6 @@
             this.label10.Size = new System.Drawing.Size(263, 31);
             this.label10.TabIndex = 5;
             this.label10.Text = "Ngày tạo phiếu nhập";
-            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // btnRemoveReceipt
             // 
@@ -853,9 +847,9 @@
             this.label18.Location = new System.Drawing.Point(184, 355);
             this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(188, 31);
+            this.label18.Size = new System.Drawing.Size(185, 31);
             this.label18.TabIndex = 26;
-            this.label18.Text = "Sđt Nhân Viên";
+            this.label18.Text = "Số Điện Thoại";
             // 
             // txtPhoneEmployee
             // 
@@ -871,9 +865,9 @@
             this.label19.Location = new System.Drawing.Point(184, 285);
             this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(194, 31);
+            this.label19.Size = new System.Drawing.Size(103, 31);
             this.label19.TabIndex = 24;
-            this.label19.Text = "Tên Nhân Viên";
+            this.label19.Text = "Họ Tên";
             // 
             // txtNameEmployee
             // 
@@ -954,7 +948,6 @@
             this.lbTotalPrice.Size = new System.Drawing.Size(264, 31);
             this.lbTotalPrice.TabIndex = 27;
             this.lbTotalPrice.Text = "Tổng Doanh Thu: 0";
-            this.lbTotalPrice.Click += new System.EventHandler(this.txtTotalPrice_Click);
             // 
             // rbtEmployee
             // 
@@ -1012,7 +1005,6 @@
             this.label12.Size = new System.Drawing.Size(135, 31);
             this.label12.TabIndex = 17;
             this.label12.Text = "Đến Ngày";
-            this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // label6
             // 
@@ -1205,7 +1197,6 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Book Shop";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tpBook.ResumeLayout(false);
             this.tpBook.PerformLayout();

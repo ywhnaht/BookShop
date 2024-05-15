@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookShop.BUS;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +17,13 @@ namespace BookShop
 {
     public partial class MainForm : Form
     {
+        private Book_BUS bookBUS = new Book_BUS();
+        private BookType_BUS bookTypeBUS = new BookType_BUS();
+        private Invoice_BUS invoiceBUS = new Invoice_BUS();
+        private Receipt_BUS receiptBUS = new Receipt_BUS();
+        private Statistic_BUS statisticBUS = new Statistic_BUS();
+        private Profile_BUS profileBUS = new Profile_BUS();
+        private Invoice_Detail_BUS invoiceDetailBUS = new Invoice_Detail_BUS();
         public bool IsCheckOut = true;
         private int currentUserId;
         private Authorize userAuthorize;
@@ -57,66 +65,22 @@ namespace BookShop
             LoaddtDate();
             LoaddgEmployee();
             LoadUserProfile();
+            CheckAccess();
         }
 
         // Xử lý sách
 
         public void LoaddgBook()
         {
-            DataTable dt = new DataTable();
-            StringBuilder query = new StringBuilder("SELECT books.id as [Mã Sách]");
-            query.Append(", book_name as [Tên Sách]");
-            query.Append(", type_name as [Loại Sách]");
-            query.Append(", author_name as [Tác Giả]");
-            query.Append(", quantity as [Số Lượng]");
-            query.Append(", price as [Giá Bán]");
-            query.Append(" FROM books, book_type");
-            query.Append(" WHERE books.book_type_id = book_type.id");
-            dt = dataProvider.exeQuery(query.ToString()); 
+            DataTable dt = bookBUS.GetBooks();
             dgBook.DataSource = dt;
         }
         private void LoadcbBookType()
         {
-            DataTable dt = new DataTable();
-            dt = dataProvider.exeQuery("SELECT * FROM book_type");
+            DataTable dt = bookBUS.GetBookTypes();
             cbBookType.DisplayMember = "type_name";
             cbBookType.ValueMember = "id";
             cbBookType.DataSource = dt;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void dgBook_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -132,50 +96,57 @@ namespace BookShop
             txtAuthor.Text = row.Cells[3].Value.ToString();
             numBookQuantity.Value = (int)row.Cells[4].Value;
             numBookPrice.Value = (int)row.Cells[5].Value;
-
-            book_bookTypeId = (int)dataProvider.exeScaler("SELECT id FROM book_type WHERE type_name = N'" + cbBookType.Text + "'");
         }
 
         private void btnAddBook_Click(object sender, EventArgs e)
         {
-            StringBuilder query = new StringBuilder("EXEC AddBook ");
-            query.Append(" @book_name = N'" + txtBook.Text + "'");
-            query.Append(",@book_type_id = " + book_bookTypeId);
-            query.Append(",@author_name = N'" + txtAuthor.Text + "'");
-            query.Append(",@quantity = " + numBookQuantity.Value);
-            query.Append(",@price = " + numBookPrice.Value);
+            try
+            {
+                string bookName = txtBook.Text;
+                int bookTypeId = book_bookTypeId;
+                string authorName = txtAuthor.Text;
+                int quantity = (int)numBookQuantity.Value;
+                decimal price = numBookPrice.Value;
 
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
-            {
-                LoaddgBook();
-                MessageBox.Show("Thêm sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                if (bookBUS.AddBook(bookName, bookTypeId, authorName, quantity, price))
+                {
+                    LoaddgBook();
+                    MessageBox.Show("Thêm sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Thêm sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Thêm sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnEditBook_Click(object sender, EventArgs e)
         {
-            StringBuilder query = new StringBuilder("EXEC UpdateBook ");
-            query.Append(" @book_id = " + book_bookId);
-            query.Append(",@book_name = N'" + txtBook.Text + "'");
-            query.Append(",@book_type_id = " + book_bookTypeId);
-            query.Append(",@author_name = N'" + txtAuthor.Text + "'");
-            query.Append(",@quantity = " + numBookQuantity.Value);
-            query.Append(",@price = " + numBookPrice.Value);
+            try
+            {
+                string bookName = txtBook.Text;
+                int bookTypeId = book_bookTypeId;
+                string authorName = txtAuthor.Text;
+                int quantity = (int)numBookQuantity.Value;
+                decimal price = numBookPrice.Value;
 
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
-            {
-                LoaddgBook();
-                MessageBox.Show("Cập nhật sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                if (bookBUS.UpdateBook(book_bookId, bookName, bookTypeId, authorName, quantity, price))
+                {
+                    LoaddgBook();
+                    MessageBox.Show("Cập nhật sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Cập nhật sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -184,16 +155,21 @@ namespace BookShop
             DialogResult check = MessageBox.Show("Bạn có chắc chắn muốn xóa sách " + txtBook.Text + " ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (check == DialogResult.Yes)
             {
-                StringBuilder query = new StringBuilder("EXEC DeleteBook @book_id = " + book_bookId);
-                int result = dataProvider.exeNonQuery(query.ToString());
-                if (result > 0)
+                try
                 {
-                    LoaddgBook();
-                    MessageBox.Show("Xóa sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    if (bookBUS.DeleteBook(book_bookId))
+                    {
+                        LoaddgBook();
+                        MessageBox.Show("Xóa sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Xóa sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -204,21 +180,17 @@ namespace BookShop
             book_bookTypeId = (int)comboBox.SelectedValue;
         }
 
-        public void UpdateBookQuantity(int bookId, int newQuantity, int choose)
+        public bool UpdateBookQuantity(int bookId, int newQuantity, bool increase)
         {
-            StringBuilder query = new StringBuilder();
-            if (choose == 1)
+            if (bookBUS.UpdateBookQuantity(bookId, newQuantity, increase))
             {
-                int count = (int)dataProvider.exeScaler("SELECT SUM(quantity) FROM books WHERE id = " + bookId);
-                query = new StringBuilder("UPDATE books SET quantity = " + (count + newQuantity) + " WHERE id = " + bookId);
+                LoaddgBook();
+                return true;
             }
             else
             {
-                int count = (int)dataProvider.exeScaler("SELECT SUM(quantity) FROM books WHERE id = " + bookId);
-                query = new StringBuilder("UPDATE books SET quantity = " + (count - newQuantity) + " WHERE id = " + bookId);
+                return false;
             }
-            dataProvider.exeNonQuery(query.ToString());
-            LoaddgBook();
         }
 
 
@@ -226,11 +198,7 @@ namespace BookShop
 
         private void LoaddgBookType()
         {
-            DataTable dt = new DataTable();
-            StringBuilder query = new StringBuilder("SELECT id as [Mã Loại Sách]");
-            query.Append(", type_name as [Loại Sách]");
-            query.Append("FROM book_type");
-            dt = dataProvider.exeQuery(query.ToString());
+            DataTable dt = bookTypeBUS.GetBookTypes();
             dgBookType.DataSource = dt;
         }
 
@@ -243,44 +211,50 @@ namespace BookShop
 
             booktype_bookTypeId = (int)row.Cells[0].Value;
             txtBookType.Text = row.Cells[1].Value.ToString();
-            //booktype_bookTypeId = (int)dataProvider.exeScaler("SELECT id FROM book_type WHERE type_name = N'" + cbBookType.Text + "'");
         }
 
         private void btnAddBookType_Click(object sender, EventArgs e)
         {
-            StringBuilder query = new StringBuilder("EXEC AddBookType ");
-            query.Append(" @type_name = N'" + txtBookType.Text + "'");
-
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
+            try
             {
-                LoaddgBookType();
-                LoadcbBookType();
-                MessageBox.Show("Thêm  loại sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                string typeName = txtBookType.Text;
+                if (bookTypeBUS.AddBookType(typeName))
+                {
+                    LoaddgBookType();
+                    LoadcbBookType();
+                    MessageBox.Show("Thêm loại sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Thêm loại sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Thêm loại sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnEditBookType_Click(object sender, EventArgs e)
         {
-            StringBuilder query = new StringBuilder("EXEC UpdateBookType ");
-            query.Append(" @type_id = " + booktype_bookTypeId);
-            query.Append(",@type_name = N'" + txtBookType.Text + "'");
-
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
+            try
             {
-                LoaddgBookType();
-                LoaddgBook();
-                LoadcbBookType();
-                MessageBox.Show("Cập nhật loại sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                string typeName = txtBookType.Text;
+                if (bookTypeBUS.UpdateBookType(booktype_bookTypeId, typeName))
+                {
+                    LoaddgBookType();
+                    LoaddgBook();
+                    LoadcbBookType();
+                    MessageBox.Show("Cập nhật loại sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật loại sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Cập nhật loại sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -289,36 +263,41 @@ namespace BookShop
             DialogResult check = MessageBox.Show("Bạn có chắc chắn muốn xóa loại sách " + txtBookType.Text + " ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (check == DialogResult.Yes)
             {
-                StringBuilder query = new StringBuilder("EXEC DeleteBookType @type_id = " + booktype_bookTypeId);
-                int result = dataProvider.exeNonQuery(query.ToString());
-                if (result > 0)
+                try
                 {
-                    LoaddgBookType();
-                    LoadcbBookType();
-                    MessageBox.Show("Xóa loại sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    if (bookTypeBUS.DeleteBookType(booktype_bookTypeId))
+                    {
+                        LoaddgBookType();
+                        LoadcbBookType();
+                        LoaddgBook();
+                        MessageBox.Show("Xóa loại sách thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa loại sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Xóa loại sách không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
         //Xử lí hóa đơn
 
-        private void LoaddgInvoice()
+        public void LoaddgInvoice()
         {
-            DataTable dt = new DataTable();
-
-            StringBuilder query = new StringBuilder("SELECT id as [Mã Hóa Đơn]");
-            query.Append(", date_create as [Ngày Tạo]");
-            query.Append(", user_name as [Tên Khách Hàng]");
-            query.Append(", user_phone as [Số Điện Thoại]");
-            query.Append(" FROM invoice");
-
-            dt = dataProvider.exeQuery(query.ToString());
-
+            DataTable dt = invoiceBUS.GetInvoices();
             dgInvoice.DataSource = dt;
+            if (dt.Rows.Count <= 0)
+            {
+                btnInvoiceDetail.Visible = false;
+            }
+            else
+            {
+                btnInvoiceDetail.Visible = true;
+            }
         }
         private void dgInvoice_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -331,50 +310,63 @@ namespace BookShop
             dtDateCreate.Value = (DateTime)row.Cells[1].Value;
             txtUserName.Text = row.Cells[2].Value.ToString();
             txtPhoneNum.Text = row.Cells[3].Value.ToString();
+            if (invoiceDetailBUS.GetInvoiceStatus(invoice_invoiceId))
+            {
+                btnEditInvoice.Enabled = false;
+                btnRemoveInvoice.Enabled = false;
+            }
+            else
+            {
+                btnEditInvoice.Enabled = true;
+                btnRemoveInvoice.Enabled = true;
+            }
         }
 
         private void btnAddInvoice_Click(object sender, EventArgs e)
         {
-            StringBuilder query = new StringBuilder("EXEC AddInvoice ");
-            query.Append("@date_create = '" + dtDateCreate.Value.ToString("yyyy-MM-dd") + "'");
-            query.Append(", @user_id = " + currentUserId); 
-            query.Append(", @user_name = N'" + txtUserName.Text + "'");
-            query.Append(", @user_phone = '" + txtPhoneNum.Text + "'");
+            try
+            {
+                DateTime dateCreate = dtDateCreate.Value;
+                string userName = txtUserName.Text;
+                string userPhone = txtPhoneNum.Text;
 
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
-            {
-                LoaddgBookType();
-                LoadcbBookType();
-                LoaddgInvoice();
-                MessageBox.Show("Thêm  hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                if (invoiceBUS.AddInvoice(dateCreate, currentUserId, userName, userPhone))
+                {
+                    LoaddgInvoice();
+                    MessageBox.Show("Thêm hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Thêm hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Thêm hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnEditInvoice_Click(object sender, EventArgs e)
         {
-            StringBuilder query = new StringBuilder("EXEC UpdateInvoice ");
-            query.Append(" @invoice_id = " + invoice_invoiceId);
-            query.Append(", @date_create = '" + dtDateCreate.Value.ToString("yyyy-MM-dd") + "'");
-            query.Append(", @user_id = " + currentUserId);
-            query.Append(", @user_name = N'" + txtUserName.Text + "'");
-            query.Append(", @user_phone = '" + txtPhoneNum.Text + "'");
+            try
+            {
+                DateTime dateCreate = dtDateCreate.Value;
+                string userName = txtUserName.Text;
+                string userPhone = txtPhoneNum.Text;
 
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
-            {
-                LoaddgBookType();
-                LoadcbBookType();
-                LoaddgInvoice();
-                MessageBox.Show("Cập nhật hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                if (invoiceBUS.UpdateInvoice(invoice_invoiceId, dateCreate, currentUserId, userName, userPhone))
+                {
+                    LoaddgInvoice();
+                    MessageBox.Show("Cập nhật hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Cập nhật hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -383,18 +375,21 @@ namespace BookShop
             DialogResult check = MessageBox.Show("Bạn có chắc chắn muốn xóa hóa đơn có mã " + invoice_invoiceId + " ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (check == DialogResult.Yes)
             {
-                StringBuilder query = new StringBuilder("EXEC DeleteInvoice @invoice_id = " + invoice_invoiceId);
-                int result = dataProvider.exeNonQuery(query.ToString());
-                if (result > 0)
+                try
                 {
-                    LoaddgBookType();
-                    LoadcbBookType();
-                    LoaddgInvoice();
-                    MessageBox.Show("Xóa hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    if (invoiceBUS.DeleteInvoice(invoice_invoiceId))
+                    {
+                        LoaddgInvoice();
+                        MessageBox.Show("Xóa hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Xóa hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -402,16 +397,16 @@ namespace BookShop
         //Xử lí phiếu nhập
         private void LoaddgReceipt()
         {
-            DataTable dt = new DataTable();
-
-            StringBuilder query = new StringBuilder("SELECT id as [Mã Phiếu Nhập]");
-            query.Append(", date_create as [Ngày Tạo]");
-            query.Append(", supplier_name as [Nhà Xuất Bản]");
-            query.Append(" FROM receipt");
-
-            dt = dataProvider.exeQuery(query.ToString());
-
+            DataTable dt = receiptBUS.GetReceipts();
             dgReceipt.DataSource = dt;
+            if (dt.Rows.Count <= 0)
+            {
+                btnReceiptDetail.Visible = false;
+            }
+            else
+            {
+                btnReceiptDetail.Visible = true;
+            }
         }
 
         private void dgReceipt_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -428,44 +423,47 @@ namespace BookShop
 
         private void btnAddReceipt_Click(object sender, EventArgs e)
         {
-            StringBuilder query = new StringBuilder("EXEC AddReceipt ");
-            query.Append("@date_create = '" + dtReceiptDateCr.Value.ToString("yyyy-MM-dd") + "'");
-            query.Append(", @supplier_name = N'" + txtSupplier.Text + "'");
+            try
+            {
+                DateTime dateCreate = dtReceiptDateCr.Value;
+                string supplierName = txtSupplier.Text;
 
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
-            {
-                LoaddgBookType();
-                LoadcbBookType();
-                LoaddgInvoice();
-                LoaddgReceipt();
-                MessageBox.Show("Thêm phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                if (receiptBUS.AddReceipt(dateCreate, supplierName))
+                {
+                    LoaddgReceipt();
+                    MessageBox.Show("Thêm phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Thêm phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Thêm phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnEditReceipt_Click(object sender, EventArgs e)
         {
-            StringBuilder query = new StringBuilder("EXEC UpdateReceipt ");
-            query.Append(" @receipt_id = " + receipt_receiptId);
-            query.Append(", @date_create = '" + dtReceiptDateCr.Value.ToString("yyyy-MM-dd") + "'");
-            query.Append(", @supplier_name = N'" + txtSupplier.Text + "'");
+            try
+            {
+                DateTime dateCreate = dtReceiptDateCr.Value;
+                string supplierName = txtSupplier.Text;
 
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
-            {
-                LoaddgBookType();
-                LoadcbBookType();
-                LoaddgInvoice();
-                LoaddgReceipt();
-                MessageBox.Show("Cập nhật phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                if (receiptBUS.UpdateReceipt(receipt_receiptId, dateCreate, supplierName))
+                {
+                    LoaddgReceipt();
+                    MessageBox.Show("Cập nhật phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Cập nhật phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -474,19 +472,21 @@ namespace BookShop
             DialogResult check = MessageBox.Show("Bạn có chắc chắn muốn xóa phiếu nhập có mã " + receipt_receiptId + " ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (check == DialogResult.Yes)
             {
-                StringBuilder query = new StringBuilder("EXEC DeleteReceipt @receipt_id = " + receipt_receiptId);
-                int result = dataProvider.exeNonQuery(query.ToString());
-                if (result > 0)
+                try
                 {
-                    LoaddgBookType();
-                    LoadcbBookType();
-                    LoaddgInvoice();
-                    LoaddgReceipt();
-                    MessageBox.Show("Xóa phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    if (receiptBUS.DeleteReceipt(receipt_receiptId))
+                    {
+                        LoaddgReceipt();
+                        MessageBox.Show("Xóa phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Xóa phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -503,20 +503,11 @@ namespace BookShop
             invoiceDetail.ShowDialog();
         }
 
-        private void label13_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        // Thống Kê
         private void LoaddtDate()
         {
             dtDateFrom.Value = DateTime.Now.AddDays(-7);
             dtDateEnd. Value = DateTime.Now;
-        }
-
-        private void rbtBookType_CheckedChanged(object sender, EventArgs e)
-        {
-            
         }
 
         private void rbtEmployee_CheckedChanged(object sender, EventArgs e)
@@ -558,22 +549,19 @@ namespace BookShop
             DataTable dt = new DataTable();
             if (rbtAll.Checked)
             {
-                dt = dataProvider.exeQuery("EXEC OverallRevenue @date_from = '" + dateFrom + "', @date_end = '" + dateEnd + "'");
+                dt = statisticBUS.GetOverallRevenue(dateFrom, dateEnd);
             }
             else if (rbtBook.Checked)
             {
-                dt = dataProvider.exeQuery("EXEC RevenueByBook @book_id = " + id_bookId + "" +
-                    ", @date_from = '" + dateFrom + "', @date_end = '" + dateEnd + "'");
+                dt = statisticBUS.GetRevenueByBook(id_bookId, dateFrom, dateEnd);
             }
             else if (rbtBookType.Checked)
             {
-                dt = dataProvider.exeQuery("EXEC RevenueByBookType @book_type_id = " + id_bookTypeId + "" +
-                   ", @date_from = '" + dateFrom + "', @date_end = '" + dateEnd + "'");
+                dt = statisticBUS.GetRevenueByBookType(id_bookTypeId, dateFrom, dateEnd);
             }
             else
             {
-                dt = dataProvider.exeQuery("EXEC RevenueByUser @user_id = " + id_userId + "" +
-                   ", @date_from = '" + dateFrom + "', @date_end = '" + dateEnd + "'");
+                dt = statisticBUS.GetRevenueByUser(id_userId, dateFrom, dateEnd);
             }
             dgRevenue.DataSource = dt;
 
@@ -587,14 +575,7 @@ namespace BookShop
                         totalRevenue += Convert.ToDecimal(row["Thành Tiền"]);
                     }
                 }
-                if (totalRevenue != 0)
-                {
-                    lbTotalPrice.Text = "Tổng tiền: " + totalRevenue.ToString("N0") + " VND";
-                }
-                else
-                {
-                    lbTotalPrice.Text = "Tổng tiền: 0 VND";
-                }
+                lbTotalPrice.Text = totalRevenue != 0 ? "Tổng tiền: " + totalRevenue.ToString("N0") + " VND" : "Tổng tiền: 0 VND";
             }
             else
             {
@@ -602,12 +583,6 @@ namespace BookShop
             }
         }
         
-
-        private void txtTotalPrice_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void dtDateFrom_ValueChanged(object sender, EventArgs e)
         {
             this.dateFrom = dtDateFrom.Value.ToString("yyyy-MM-dd");
@@ -633,12 +608,6 @@ namespace BookShop
                 id_userId = (int)comboBox.SelectedValue;
             }
         }
-
-        private void label12_Click(object sender, EventArgs e)
-        {
-
-        }
-
 
         // Quản lí nhân viên
         private void dgEmployee_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -778,31 +747,9 @@ namespace BookShop
 
         private void btnUpdateAvatar_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string filePath = openFileDialog.FileName;
-                string fileName = Path.GetFileName(filePath);
-                string destDir = Path.Combine(Application.StartupPath, "ProfilePictures");
-                string destPath = Path.Combine(destDir, fileName);
+                bool check = profileBUS.UpdateProfileAvatar(currentUserId);
 
-                if (!Directory.Exists(destDir))
-                {
-                    Directory.CreateDirectory(destDir);
-                }
-
-                // Copy file to the destination path
-                File.Copy(filePath, destPath, true);
-
-                // Update profile picture path in the database
-                StringBuilder query = new StringBuilder("EXEC UpdateUserProfilePicture ");
-                query.Append("@user_id = " + currentUserId + ", ");
-                query.Append("@profile_picture = N'" + destPath.Replace("'", "''") + "'");
-
-                int result = dataProvider.exeNonQuery(query.ToString());
-
-                if (result > 0)
+                if (check)
                 {
                     LoadUserProfile();
                     MessageBox.Show("Cập nhật ảnh đại diện thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
@@ -811,87 +758,80 @@ namespace BookShop
                 {
                     MessageBox.Show("Cập nhật ảnh đại diện không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
-            }
         }
 
         private void btnUpdateProfile_Click(object sender, EventArgs e)
         {
-            if (txtNameEmployee.Text == string.Empty || txtAccountName.Text == string.Empty || txtPassword.Text == string.Empty || txtPhoneEmployee.Text == string.Empty || txtAddrEmployee.Text == string.Empty)
-            {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else 
-            {
-                int count = (int)dataProvider.exeScaler("SELECT COUNT(*) FROM users WHERE user_name = '" + txtAccountName.Text + "' AND " +
-                    "id != " + currentUserId);
-                if (count > 0)
-                {
-                    MessageBox.Show("Tên Tài Khoản đã tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    string pass = txtPassword.Text;
-                    StringBuilder query = new StringBuilder("EXEC UpdateUser ");
-                    query.Append(" @id = " + currentUserId);
-                    query.Append(", @full_name = N'" + txtNameEmployee.Text + "'");
-                    query.Append(", @phone = '" + txtPhoneEmployee.Text + "'");
-                    query.Append(", @address = N'" + txtAddrEmployee.Text + "'");
-                    query.Append(", @user_name = N'" + txtAccountName.Text + "'");
-                    query.Append(", @password = N'" + pass + "'");
-                    query.Append(", @user_type_id = " + getUserTypeId(currentUserId));
-
-                    int result = dataProvider.exeNonQuery(query.ToString());
-                    if (result > 0)
-                    {
-                        string hashed_pass = PasswordEncrypt.HashPassword(pass);
-                        dataProvider.exeNonQuery("UPDATE users SET hashed_password = '" + hashed_pass + "' WHERE id = '" + currentUserId + "'");
-
-                        LoadUserProfile();
-                        MessageBox.Show("Cập nhật thông tin thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Cập nhật thông tin không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    }
-                }
-            }
+            profileBUS.UpdateUserProfile(currentUserId, txtNameEmployee.Text, txtAccountName.Text, txtPassword.Text, txtPhoneEmployee.Text, txtAddrEmployee.Text, getUserTypeId(currentUserId));
         }
 
         // Phân Quyền
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
             TabPage tabPage = e.TabPage;
+            bool hasAccess = true;
             if (tabPage == tpBook && !userAuthorize.HasRole("Quản Lý Sách"))
             {
+                hasAccess = false;
                 MessageBox.Show("Bạn không có quyền truy cập vào chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true; 
             }
             else if (tabPage == tpBookType && !userAuthorize.HasRole("Quản Lý Loại Sách"))
             {
+                hasAccess = false;
                 MessageBox.Show("Bạn không có quyền truy cập vào chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
             }
             else if (tabPage == tpInvoice && !userAuthorize.HasRole("Quản Lý Hóa Đơn"))
             {
+                hasAccess = false;
                 MessageBox.Show("Bạn không có quyền truy cập vào chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
             }
             else if (tabPage == tpReceipt && !userAuthorize.HasRole("Quản Lý Phiếu Nhập"))
             {
+                hasAccess = false;
                 MessageBox.Show("Bạn không có quyền truy cập vào chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
             }
             else if (tabPage == tpRevenue && !userAuthorize.HasRole("Quản Lý Doanh Thu"))
             {
+                hasAccess = false;
                 MessageBox.Show("Bạn không có quyền truy cập vào chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
             }
             else if (tabPage == tpEmployee && !userAuthorize.HasRole("Quản Lý Nhân Viên"))
             {
+                hasAccess = false;
                 MessageBox.Show("Bạn không có quyền truy cập vào chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
             }
+            if (!hasAccess)
+            {
+                //MessageBox.Show("Bạn không có quyền truy cập vào chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //e.Cancel = true;
+                tabPage.Parent = null; // Ẩn TabPage nếu không có quyền truy cập
+            }
+            else
+            {
+                tabPage.Parent = tabControl1; // Hiển thị TabPage nếu có quyền truy cập
+            }
         }
+        private void CheckAccess()
+        {
+            bool hasBookAccess = userAuthorize.HasRole("Quản Lý Sách");
+            bool hasBookTypeAccess = userAuthorize.HasRole("Quản Lý Loại Sách");
+            bool hasInvoiceAccess = userAuthorize.HasRole("Quản Lý Hóa Đơn");
+            bool hasReceiptAccess = userAuthorize.HasRole("Quản Lý Phiếu Nhập");
+            bool hasRevenueAccess = userAuthorize.HasRole("Quản Lý Doanh Thu");
+            bool hasEmployeeAccess = userAuthorize.HasRole("Quản Lý Nhân Viên");
 
+            tpBook.Parent = hasBookAccess ? tabControl1 : null;
+            tpBookType.Parent = hasBookTypeAccess ? tabControl1 : null;
+            tpInvoice.Parent = hasInvoiceAccess ? tabControl1 : null;
+            tpReceipt.Parent = hasReceiptAccess ? tabControl1 : null;
+            tpRevenue.Parent = hasRevenueAccess ? tabControl1 : null;
+            tpEmployee.Parent = hasEmployeeAccess ? tabControl1 : null;
+        }
     }
 }

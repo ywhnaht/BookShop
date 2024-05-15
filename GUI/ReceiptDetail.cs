@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -95,7 +96,7 @@ namespace BookShop
                 int result = dataProvider.exeNonQuery(query.ToString());
                 if (result > 0)
                 {
-                    mainForm.UpdateBookQuantity(book_bookId, newQuantity, 1);
+                    mainForm.UpdateBookQuantity(book_bookId, newQuantity, true);
                     LoaddgReceiptDetail();
                     LoadcbBook();
                     LoadPrice();
@@ -108,24 +109,27 @@ namespace BookShop
             }
             else
             {
-                count = (int)dataProvider.exeScaler("SELECT SUM(quantity) FROM receipt_detail WHERE receipt_id = " + receiptId + " AND " +
+                int currentQuantity = (int)dataProvider.exeScaler("SELECT ISNULL(SUM(quantity), 0) FROM receipt_detail WHERE receipt_id = " + receiptId + " AND " +
                 "book_id = " + book_bookId);
-                UpdateQuantity(count);
+                UpdateQuantity(currentQuantity);
             }
         }
 
-        private void UpdateQuantity(int quantity)
+        private void UpdateQuantity(int currentQuantity)
         {
+            receiptDetailId = (int)dataProvider.exeScaler("SELECT id FROM receipt_detail WHERE receipt_id = " + receiptId + " AND book_id = " + book_bookId);
+            int newQuantity = (int)numBookQuantity.Value;
+
             StringBuilder query = new StringBuilder("EXEC UpdateReceiptDetail ");
             query.Append(" @receipt_detail_id = " + receiptDetailId);
-            query.Append(",@receipt_id = " + receiptId);
+            query.Append(",@receipt_id = " + this.receiptId);
             query.Append(",@book_id = " + book_bookId);
-            query.Append(",@quantity = " + (numBookQuantity.Value + quantity));
+            query.Append(",@quantity = " + (newQuantity + currentQuantity));
 
             int result = dataProvider.exeNonQuery(query.ToString());
             if (result > 0)
             {
-                //mainForm.UpdateBookQuantity(book_bookId, quantity, 1);
+                mainForm.UpdateBookQuantity(book_bookId, newQuantity, true);
                 LoaddgReceiptDetail();
                 LoadcbBook();
                 LoadPrice();
@@ -142,29 +146,62 @@ namespace BookShop
             DialogResult check = MessageBox.Show("Bạn có chắc chắn muốn xóa sách " + bookName + " ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (check == DialogResult.Yes)
             {
-                int quantity = (int)dataProvider.exeScaler("SELECT SUM(quantity) FROM receipt_detail WHERE id = " + receiptDetailId + " AND " +
+                receiptDetailId = (int)dataProvider.exeScaler("SELECT id FROM receipt_detail WHERE receipt_id = " + receiptId + " AND book_id = " + book_bookId);
+                int currentQuantity = (int)dataProvider.exeScaler("SELECT SUM(quantity) FROM books WHERE id = " + book_bookId);
+                int quantity = (int)dataProvider.exeScaler("SELECT ISNULL(SUM(quantity), 0) FROM receipt_detail WHERE id = " + receiptDetailId + " AND " +
                     "book_id = " + book_bookId + " AND receipt_id = " + receiptId);
-                StringBuilder query = new StringBuilder("DELETE FROM receipt_detail WHERE id = " + receiptDetailId + " AND " +
-                    "book_id = " + book_bookId);
-                int result = dataProvider.exeNonQuery(query.ToString());
-                if (result > 0)
+                if (currentQuantity >= quantity)
                 {
-                    mainForm.UpdateBookQuantity(book_bookId, quantity, 2);
-                    LoaddgReceiptDetail();
-                    LoadcbBook();
-                    LoadPrice();
-                    MessageBox.Show("Xóa sách khỏi phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    StringBuilder query = new StringBuilder("DELETE FROM receipt_detail WHERE id = " + receiptDetailId + " AND " +
+                        "book_id = " + book_bookId);
+                    int result = dataProvider.exeNonQuery(query.ToString());
+                    if (result > 0)
+                    {
+                        mainForm.UpdateBookQuantity(book_bookId, quantity, false);
+                        LoaddgReceiptDetail();
+                        LoadcbBook();
+                        LoadPrice();
+                        MessageBox.Show("Xóa sách khỏi phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa sách khỏi phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Xóa sách khỏi phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show("Không thể cập nhật phiếu nhập vì sách này đã được đem bán!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             }
         }
 
         private void btnEditReceiptDetail_Click(object sender, EventArgs e)
         {
-            UpdateQuantity(0);
+            int currentQuantity = (int)dataProvider.exeScaler("SELECT ISNULL(SUM(quantity), 0) FROM receipt_detail WHERE receipt_id = " + receiptId + " AND " +
+                "book_id = " + book_bookId);
+            receiptDetailId = (int)dataProvider.exeScaler("SELECT id FROM receipt_detail WHERE receipt_id = " + receiptId + " AND book_id = " + book_bookId);
+            int newQuantity = (int)numBookQuantity.Value;
+            int difference = newQuantity - currentQuantity;
+
+            StringBuilder query = new StringBuilder("EXEC UpdateReceiptDetail ");
+            query.Append(" @receipt_detail_id = " + receiptDetailId);
+            query.Append(",@receipt_id = " + this.receiptId);
+            query.Append(",@book_id = " + book_bookId);
+            query.Append(",@quantity = " + (newQuantity));
+
+            int result = dataProvider.exeNonQuery(query.ToString());
+            if (result > 0)
+            {
+                mainForm.UpdateBookQuantity(book_bookId, Math.Abs(difference), difference > 0);
+                LoaddgReceiptDetail();
+                LoadcbBook();
+                LoadPrice();
+                MessageBox.Show("Cập nhật sách trong phiếu nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
+            else
+            {
+                MessageBox.Show("Cập nhật sách trong phiếu nhập không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
         }
 
         private void dgReceiptDetail_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -176,7 +213,7 @@ namespace BookShop
 
             cbBook.Text = row.Cells[0].Value.ToString();
             numBookQuantity.Value = (int)row.Cells[1].Value;
-            receiptDetailId = (int)dataProvider.exeScaler("SELECT id FROM receipt_detail WHERE receipt_id = " + receiptId + " AND book_id = " + book_bookId);
+            
         }
     }
 }

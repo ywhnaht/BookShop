@@ -1,10 +1,12 @@
-﻿using System;
+﻿using BookShop.BUS;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,7 +15,8 @@ namespace BookShop
 {
     public partial class InvoiceDetail : Form
     {
-        DataProvider dataProvider = new DataProvider();
+        private Invoice_Detail_BUS invoiceDetailBUS = new Invoice_Detail_BUS();
+        private DataProvider dataProvider  = new DataProvider();
         private MainForm mainForm;
         private int invoiceId;
         private int invoiceDetailId;
@@ -36,28 +39,26 @@ namespace BookShop
 
         private void LoaddgInvoiceDetail()
         {
-            DataTable dt = new DataTable();
-            StringBuilder query = new StringBuilder("SELECT books.book_name as [Tên Sách]");
-            query.Append(", invoice_detail.quantity as [Số Lượng]");
-            query.Append(", books.price as [Đơn Giá]");
-            query.Append(", books.price * invoice_detail.quantity as [Thành Tiền]");
-            query.Append(" FROM invoice_detail, books");
-            query.Append(" WHERE books.id = invoice_detail.book_id");
-            query.Append(" AND invoice_detail.invoice_id = " + this.invoiceId);
-            dt = dataProvider.exeQuery(query.ToString());
+            DataTable dt = invoiceDetailBUS.GetInvoiceDetails(invoiceId);
             dgInvoiceDetail.DataSource = dt;
+            if (invoiceDetailBUS.GetInvoiceStatus(invoiceId))
+            {
+                btnPrintInvoice.Visible = false;
+                btnAddInvoiceDetail.Visible = false;
+                btnEditInvoiceDetail.Visible = false;
+                btnRemoveInvoiceDetail.Visible = false; 
+            }
         }
 
         private void LoadPrice()
         {
-            if ((int)dataProvider.exeScaler("SELECT COUNT(*) FROM invoice_detail WHERE invoice_id = " + invoiceId) > 0)
+            try
             {
-                int totalPrice = (int)dataProvider.exeScaler("SELECT SUM(invoice_detail.quantity * books.price) FROM invoice_detail, books " +
-                    "WHERE invoice_detail.invoice_id = " + this.invoiceId + " AND " + "invoice_detail.book_id = books.id");
+                int totalPrice = invoiceDetailBUS.GetTotalPrice(invoiceId);
                 txtTotalPrice.Text = "Tổng Tiền: " + totalPrice.ToString("N0") + " VND";
-                dataProvider.exeNonQuery("UPDATE invoice SET total_price = " + totalPrice + " WHERE id = " + this.invoiceId);
+                invoiceDetailBUS.UpdateInvoiceTotalPrice(invoiceId);
             }
-            else
+            catch
             {
                 txtTotalPrice.Text = "Tổng Tiền: 0";
             }
@@ -65,8 +66,7 @@ namespace BookShop
 
         private void LoadcbBook()
         {
-            DataTable dt = new DataTable();
-            dt = dataProvider.exeQuery("SELECT * FROM books WHERE quantity > 0");
+            DataTable dt = invoiceDetailBUS.GetBook();
             cbBook.DisplayMember = "book_name";
             cbBook.ValueMember = "id";
             cbBook.DataSource = dt;
@@ -80,87 +80,51 @@ namespace BookShop
         {
 
         }
-
-        private void ReceiptTitle_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dgInvoiceDetail_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            //int rowId = e.RowIndex;
-            //if (rowId < 0) rowId = 0;
-            //if (rowId == dgInvoiceDetail.RowCount - 1) rowId = rowId - 1;
-            //DataGridViewRow row = dgInvoiceDetail.Rows[rowId];
-
-            //cbBook.Text = row.Cells[0].Value.ToString();
-            //numBookQuantity.Value = (int)row.Cells[1].Value;
-            //invoiceDetailId = (int)dataProvider.exeScaler("SELECT id FROM invoice_detail WHERE invoice_id = " +  invoiceId + " AND book_id = " + book_bookId);
-        }
-
         private void btnAddInvoiceDetail_Click(object sender, EventArgs e)
         {
-            int count = (int)dataProvider.exeScaler("SELECT SUM(quantity) FROM books WHERE id = " + book_bookId);
-            int newQuantity = (int)numBookQuantity.Value;
-            if (newQuantity <= count)
+            try
             {
-                int sum = (int)dataProvider.exeScaler("SELECT COUNT(*) FROM invoice_detail WHERE invoice_id = " + invoiceId + " AND " +
-                "book_id = " + book_bookId);
-                if (sum == 0)
+                int newQuantity = (int)numBookQuantity.Value;
+                if (invoiceDetailBUS.AddOrUpdateInvoiceDetail(invoiceId, book_bookId, newQuantity))
                 {
-                    StringBuilder query = new StringBuilder("EXEC AddInvoiceDetail ");
-                    query.Append(" @book_id = " + book_bookId);
-                    query.Append(",@quantity = " + newQuantity);
-                    query.Append(",@invoice_id = " + this.invoiceId);
-
-                    int result = dataProvider.exeNonQuery(query.ToString());
-                    if (result > 0)
-                    {
-                        LoaddgInvoiceDetail();
-                        LoadcbBook();
-                        LoadPrice();
-                        mainForm.LoaddgBook();
-                        MessageBox.Show("Thêm sách vào hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Thêm sách vào hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    }
+                    LoaddgInvoiceDetail();
+                    LoadcbBook();
+                    LoadPrice();
+                    mainForm.LoaddgBook();
+                    MessageBox.Show("Thêm sách vào hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
                 else
                 {
-                    sum = (int)dataProvider.exeScaler("SELECT SUM(quantity) FROM invoice_detail WHERE invoice_id = " + invoiceId + " AND " +
-                    "book_id = " + book_bookId);
-                    UpdateQuantity(sum);
+                    MessageBox.Show("Thêm sách vào hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Không đủ số lượng sách này trong cửa hàng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void UpdateQuantity(int quantity)
         {
-            StringBuilder query = new StringBuilder("EXEC UpdateInvoiceDetail ");
-            query.Append(" @id = " + invoiceDetailId);
-            query.Append(",@book_id = " + book_bookId);
-            query.Append(",@quantity = " + (numBookQuantity.Value + quantity));
-            query.Append(",@invoice_id = " + invoiceId);
-
-            int result = dataProvider.exeNonQuery(query.ToString());
-            if (result > 0)
+            try
             {
-                //mainForm.UpdateBookQuantity(book_bookId, quantity, 1);
-                LoaddgInvoiceDetail();
-                LoadcbBook();
-                LoadPrice();
-                mainForm.LoaddgBook();
-                MessageBox.Show("Cập nhật sách trong hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                int newQuantity = (int)numBookQuantity.Value;
+                if (invoiceDetailBUS.UpdateInvoiceDetail(invoiceId, book_bookId, newQuantity))
+                {
+                    LoaddgInvoiceDetail();
+                    LoadcbBook();
+                    LoadPrice();
+                    mainForm.LoaddgBook();
+                    MessageBox.Show("Cập nhật sách trong hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật sách trong hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Cập nhật sách trong hóa đơn không thành công!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -174,10 +138,7 @@ namespace BookShop
             DialogResult check = MessageBox.Show("Bạn có chắc chắn muốn xóa sách " + bookName + " ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (check == DialogResult.Yes)
             {
-                StringBuilder query = new StringBuilder("EXEC DeleteInvoiceDetail ");
-                query.Append(" @id = " + invoiceDetailId);
-                int result = dataProvider.exeNonQuery(query.ToString());
-                if (result > 0)
+                if (invoiceDetailBUS.DeleteInvoiceDetail(invoiceDetailId))
                 {
                     LoaddgInvoiceDetail();
                     LoadcbBook();
@@ -197,6 +158,7 @@ namespace BookShop
             ComboBox comboBox = sender as ComboBox;
             book_bookId = (int)comboBox.SelectedValue;
             bookName = comboBox.Text;
+             
         }
 
         private void dgInvoiceDetail_CellClick_1(object sender, DataGridViewCellEventArgs e)
@@ -208,38 +170,31 @@ namespace BookShop
 
             cbBook.Text = row.Cells[0].Value.ToString();
             numBookQuantity.Value = (int)row.Cells[1].Value;
-            invoiceDetailId = (int)dataProvider.exeScaler("SELECT id FROM invoice_detail WHERE invoice_id = " + invoiceId + " AND book_id = " + book_bookId);
+            invoiceDetailId = (int)dataProvider.exeScaler("SELECT id FROM invoice_detail WHERE invoice_id = " + invoiceId + " AND " + "book_id = " + book_bookId);
         }
 
         private void btnPrintInvoice_Click(object sender, EventArgs e)
         {
-            DialogResult check = MessageBox.Show("Xác nhận thanh toán và in hóa đơn?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (check == DialogResult.Yes)
+            if (dgInvoiceDetail.Rows.Count <= 1)
             {
-                dataProvider.exeNonQuery("UPDATE invoice SET status = 1 WHERE id = " + invoiceId);
-                prdInvoice.Document = pdInvoice;
-                prdInvoice.ShowDialog();
+                MessageBox.Show("Vui lòng chọn sách trước khi in hóa đơn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                DialogResult check = MessageBox.Show("Xác nhận thanh toán và in hóa đơn?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (check == DialogResult.Yes)
+                {
+                    invoiceDetailBUS.UpdateInvoiceStatus(invoiceId, 1);
+                    prdInvoice.Document = pdInvoice;
+                    prdInvoice.ShowDialog();
+                    mainForm.LoaddgInvoice();
+                }
             }
         }
 
         private void pdInvoice_PrintPage(object sender, PrintPageEventArgs e)
         {
-            DataTable dt = new DataTable();
-            StringBuilder query = new StringBuilder("SELECT books.book_name");
-            query.Append(", invoice_detail.quantity");
-            query.Append(", books.price");
-            query.Append(", books.price * invoice_detail.quantity as price_item");
-            query.Append(", invoice.user_name");
-            query.Append(", invoice.user_phone");
-            query.Append(", invoice.date_create");
-            query.Append(", invoice.total_price");
-            query.Append(", users.full_name as employee_name");
-            query.Append(" FROM invoice_detail");
-            query.Append(" JOIN books ON books.id = invoice_detail.book_id");
-            query.Append(" JOIN invoice ON invoice_detail.invoice_id = invoice.id");
-            query.Append(" JOIN users ON invoice.user_id = users.id");
-            query.Append(" WHERE invoice_detail.invoice_id = " + this.invoiceId);
-            dt = dataProvider.exeQuery(query.ToString());
+            DataTable dt = invoiceDetailBUS.GetInvoiceForPrinting(invoiceId);
 
             if (dt.Rows.Count == 0)
             {
